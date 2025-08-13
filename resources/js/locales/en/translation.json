@@ -1,0 +1,37 @@
+{
+    "dashboard": "Dashboard",
+    "dashboards": {
+        "welcomeMessage": "You're logged in!"
+    },
+
+    "records": "Records",
+    "management": "Management",
+    "permissions": "Permissions",
+    "developmentOptions": "Development Options",
+    "databaseBrowser": "Database Browser",
+    "administration": "Administration",
+    "medicalRecords": "Medical Records",
+    "attendance": "Attendance",
+    "payroll": "Payroll",
+    "financials": "Financials",
+
+    "users": "Users",
+    "id": "ID",
+    "name": "Name",
+    "email": "Email",
+    "actions": "Actions",
+    "newUser": "New User",
+    "edit": "Edit",
+    "delete": "Delete",
+    "viewUser": "View User",
+    "sessions": "Sessions",
+    "activeSessions": "Active Sessions",
+    "userDetails": "User Details",
+    "loading": "Loading...",
+    "create": "Create",
+    "cancel": "Cancel",
+    "save": "Save",
+    "newPassword": "New Password (optional)",
+    "confirmPassword": "Confirm Password",
+    "password": "Password"
+}
