@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,11 +15,11 @@ class UsersTableSeeder extends Seeder
     {
         // Create 5 sample users
         while (User::count() < 5) {
-            dump(User::create([
+            User::create([
                 'name' => 'U00' . (User::count() + 1),
                 'email' => 'sampleuser' . (User::count() + 1) . '@example.com',
-                'password' => bcrypt('password'), // Use a secure password
-            ]));
+                'password' => Hash::make('password'), // Use a secure password
+            ]);
         }
     }
 }

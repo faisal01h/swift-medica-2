@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -51,7 +52,7 @@ class UserController extends Controller
             'nik' => 'nullable|string',
             'bpjs_number' => 'nullable|string',
         ]);
-        $data['password'] = bcrypt($data['password']);
+        $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
 
         // Assign roles using Spatie Permission
@@ -87,7 +88,7 @@ class UserController extends Controller
         ]);
 
         if (!empty($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
+            $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
