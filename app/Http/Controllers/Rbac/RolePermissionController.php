@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Rbac;
 
+use App\Facades\ActivityLogger;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Contracts\Activity;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -36,6 +38,8 @@ class RolePermissionController extends Controller
 
         $role = Role::findOrFail($roleId);
         $role->syncPermissions($data['permissions'] ?? []);
+
+        ActivityLogger::log('Role permissions updated: ' . implode(', ', $role->permissions->pluck('name')->toArray()), $role);
 
         return redirect()->route('roles.index')->with('success', 'Permissions updated');
     }

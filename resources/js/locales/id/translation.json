@@ -6,6 +6,11 @@
     "roles.newRole": "Tambah Role",
     "roles.editRole": "Edit Role",
 
+    "ihs.orgid": "IHS OrgID",
+    "ihs.userid": "IHS UserID",
+    "nik": "NIK",
+    "bpjs_number": "No. BPJS",
+
     "records": "Rekam Data",
     "management": "Manajemen",
     "permissions": "Perizinan",
@@ -16,7 +21,30 @@
     "attendance": "Kehadiran",
     "payroll": "Penggajian",
     "financials": "Keuangan",
+
     "admissions": "Penerimaan",
+    "admission.newAdmission": "Penerimaan Baru",
+    "admission.addNewPatient": "Tambah Pasien",
+    "admission.newPatient": "Pasien Baru",
+    "admission.selectPatient": "Pilih Pasien",
+    "admission.selectRoom": "Pilih Kamar",
+    "admission.admissionDate": "Tanggal Masuk",
+    "admission.dischargeDate": "Tanggal Pulang",
+    "admission.notes": "Catatan",
+    "admission.create": "Simpan",
+
+    "patient.name": "Nama Pasien",
+    "patient.email": "Email",
+    "patient.phone": "Telepon",
+    "patient.address": "Alamat",
+    "patient.dateOfBirth": "Tanggal Lahir",
+    "patient.identityNumber": "Nomor Identitas",
+    "patient.gender": "Sex",
+    "patient.male": "Laki-laki",
+    "patient.female": "Perempuan",
+    "patient.selectGender": "Pilih Jenis Kelamin",
+
+
     "appointments": "Appointment",
     "billing": "Penagihan",
     "payments": "Pembayaran",

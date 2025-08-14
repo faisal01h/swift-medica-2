@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\UserManagement;
 
+use App\Facades\ActivityLogger;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
@@ -17,9 +18,7 @@ class UserController extends Controller
     public function index()
     {
         $rolesList = Role::all();
-        $users = User::with('roles')->get()->map(function ($user) {
-            return array_merge($user->toArray(), ['roles' => $user->roles->pluck('id')->toArray()]);
-        });
+        $users = User::with('roles')->get();
         return Inertia::render('UserManagement/Index', [
             'users' => $users,
             'rolesList' => $rolesList,
@@ -47,6 +46,10 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|confirmed|min:6',
             'roles' => 'nullable|array',
+            'ihs_organization_id' => 'nullable|string',
+            'ihs_user_id' => 'nullable|string',
+            'nik' => 'nullable|string',
+            'bpjs_number' => 'nullable|string',
         ]);
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
@@ -88,7 +91,7 @@ class UserController extends Controller
         } else {
             unset($data['password']);
         }
-
+        ActivityLogger::log('User updated', $user);
         $user->update($data);
 
         // Sync roles using spatie/laravel-permission
@@ -103,6 +106,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        ActivityLogger::log('User deleted', $user);
         $user->delete();
         return redirect()->route('users.index');
     }

@@ -1,0 +1,38 @@
+services:
+  app:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: swift-medica
+    container_name: swift-medica-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www:cached
+      - app_vendor:/var/www/vendor
+    networks:
+      - app-network
+
+  nginx:
+    platform: linux/amd64
+    image: nginx:alpine
+    container_name: swift-medica-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www:ro
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/:ro
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  app_vendor:
+    driver: local

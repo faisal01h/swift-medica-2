@@ -49,6 +49,18 @@ Route::middleware('auth')->group(function () {
         ->name('roles.permissions.edit');
     Route::put('roles/{role}/permissions', [App\Http\Controllers\Rbac\RolePermissionController::class, 'update'])
         ->name('roles.permissions.update');
+    
+    // Patient admissions CRUD
+    Route::resource('admissions', App\Http\Controllers\Admission\AdmissionController::class)
+        ->names([
+            'index' => 'admissions.index',
+            'create' => 'admissions.create',
+            'store' => 'admissions.store',
+            'show' => 'admissions.show',
+            'edit' => 'admissions.edit',
+            'update' => 'admissions.update',
+            'destroy' => 'admissions.destroy',
+        ]);
 });
 
 require __DIR__.'/auth.php';

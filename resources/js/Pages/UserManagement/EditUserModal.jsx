@@ -12,7 +12,8 @@ export default function EditUserModal({ visible, onHide, user, roles }) {
         email: user?.email || '',
         password: '',
         password_confirmation: '',
-        roles: user?.roles || [],
+        roles: user?.roles.map(role => role.id) || [],
+        nik: user?.nik || '',
     });
 
     const submit = e => {
@@ -49,6 +50,14 @@ export default function EditUserModal({ visible, onHide, user, roles }) {
                         type="email"
                         value={form.data.email}
                         onChange={e => form.setData('email', e.target.value)}
+                        className="w-full"
+                    />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">NIK</label>
+                    <InputText
+                        value={form.data.nik}
+                        onChange={e => form.setData('nik', e.target.value)}
                         className="w-full"
                     />
                 </div>

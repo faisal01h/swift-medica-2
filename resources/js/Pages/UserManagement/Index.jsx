@@ -55,8 +55,15 @@ export default function Index({ users, rolesList }) {
                 </div>
                 <DataTable value={users} paginator rows={10} className="p-datatable-sm">
                     <Column field="id" header={t('id')} sortable />
+                    <Column field="ihs_organization_id" header={t('ihs.orgid')} sortable />
+                    <Column field="ihs_user_id" header={t('ihs.userid')} sortable />
+                    <Column field="nik" header={t('nik')} sortable />
+                    <Column field="bpjs_number" header={t('bpjs_number')} sortable />
                     <Column field="name" header={t('name')} sortable />
                     <Column field="email" header={t('email')} sortable />
+                    <Column field="roles" header={t('roles')} body={(rowData) => {
+                        return rowData.roles.map(role => role.name).join(', ');
+                    }} />
                     <Column header={t('actions')} body={rowData => (
                         <div className="flex items-center">
                             <button

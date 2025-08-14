@@ -20,7 +20,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->string('ihs_organization_id')->nullable();
             $table->string('ihs_user_id')->nullable();
-            $table->String('nik')->nullable();
+            $table->string('nik')->nullable();
+            $table->string('bpjs_number')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
