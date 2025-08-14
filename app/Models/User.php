@@ -24,6 +24,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'ihs_organization_id',
+        'ihs_user_id',
+        'nik',
+        'bpjs_number',
     ];
 
     /**

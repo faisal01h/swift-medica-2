@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Rbac;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
