@@ -23,6 +23,7 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles,name',
             'slug' => 'required|string|unique:roles,slug',
             'description' => 'nullable|string',
+            'guard_name' => 'required|string',
         ]);
         DB::table('roles')->insert($data + ['created_at' => now(), 'updated_at' => now()]);
         return redirect()->route('roles.index')->with('success', 'Role created');

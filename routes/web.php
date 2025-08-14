@@ -50,15 +50,31 @@ Route::middleware('auth')->group(function () {
     Route::put('roles/{role}/permissions', [App\Http\Controllers\Rbac\RolePermissionController::class, 'update'])
         ->name('roles.permissions.update');
     
+    // Fetch paginated patients JSON endpoint (must come before resource to avoid route conflict)
+    Route::get('patients/fetch', [App\Http\Controllers\Patient\PatientController::class, 'fetch'])
+        ->name('patients.fetch');
+    
+    // Patient CRUD
+    Route::resource('patients', App\Http\Controllers\Patient\PatientController::class)
+        ->names([
+            'index'   => 'patients.index',
+            'create'  => 'patients.create',
+            'store'   => 'patients.store',
+            'show'    => 'patients.show',
+            'edit'    => 'patients.edit',
+            'update'  => 'patients.update',
+            'destroy' => 'patients.destroy',
+        ]);
+    
     // Patient admissions CRUD
     Route::resource('admissions', App\Http\Controllers\Admission\AdmissionController::class)
         ->names([
-            'index' => 'admissions.index',
-            'create' => 'admissions.create',
-            'store' => 'admissions.store',
-            'show' => 'admissions.show',
-            'edit' => 'admissions.edit',
-            'update' => 'admissions.update',
+            'index'   => 'admissions.index',
+            'create'  => 'admissions.create',
+            'store'   => 'admissions.store',
+            'show'    => 'admissions.show',
+            'edit'    => 'admissions.edit',
+            'update'  => 'admissions.update',
             'destroy' => 'admissions.destroy',
         ]);
 });
