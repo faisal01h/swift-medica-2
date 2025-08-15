@@ -67,6 +67,8 @@ Route::middleware('auth')->group(function () {
         ]);
     
     // Patient admissions CRUD
+    // JSON endpoint for fetching admissions list in real-time
+    Route::get('admissions/fetch', [App\Http\Controllers\Admission\AdmissionController::class, 'fetch'])->name('admissions.fetch');
     Route::resource('admissions', App\Http\Controllers\Admission\AdmissionController::class)
         ->names([
             'index'   => 'admissions.index',

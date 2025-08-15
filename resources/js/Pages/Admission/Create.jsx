@@ -10,7 +10,13 @@ import { useTranslation } from 'react-i18next';
 
 export default function Create({ patients, rooms }) {
     const { t } = useTranslation();
-    const form = useForm({ patient_id: null, admission_date: '', discharge_date: '', room_id: null, notes: '' });
+    const form = useForm({ 
+        patient_id: null, 
+        admission_date: new Date().toISOString().slice(0, 16), // today
+        discharge_date: '', 
+        room_id: null, 
+        notes: '' 
+    });
     const [showPatientDialog, setShowPatientDialog] = useState(false);
     const newPatientForm = useForm({ name: '', email: '', phone: '', date_of_birth: '', identity_number: '' });
 
@@ -79,15 +85,18 @@ export default function Create({ patients, rooms }) {
                     </div>
                 </form>
                 <Dialog header={t('admission.newPatient')} visible={showPatientDialog} style={{ width: '450px' }} onHide={() => setShowPatientDialog(false)}>
-                    <form onSubmit={e => {
-                        e.preventDefault();
-                        newPatientForm.post(route('patients.store'), {
-                            onSuccess: () => {
-                                setShowPatientDialog(false);
-                                router.reload();
-                            }
-                        });
-                    }} className="space-y-4">
+                    <form 
+                        onSubmit={e => {
+                            e.preventDefault();
+                            newPatientForm.post(route('patients.store'), {
+                                onSuccess: () => {
+                                    setShowPatientDialog(false);
+                                    router.reload();
+                                }
+                            });
+                        }} 
+                        className="space-y-4"
+                    >
                         <div>
                             <label className="block text-sm font-medium text-gray-700">{t('patient.name')}</label>
                             <InputText value={newPatientForm.data.name} onChange={e => newPatientForm.setData('name', e.target.value)} className="w-full" />
