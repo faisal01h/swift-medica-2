@@ -19,6 +19,8 @@ class PatientAdmission extends Model
         'patient_id',
         'admission_date',
         'discharge_date',
+        'type', // sick or wellness
+        'visit_type', // outpatient or inpatient
         'room_id',
         'notes',
     ];

@@ -23,7 +23,8 @@
     "financials": "Keuangan",
 
     "admissions": "Penerimaan",
-    "admission.newAdmission": "Penerimaan Baru",
+    "admissions.admission": "Pendaftaran",
+    "admission.newAdmission": "Pendaftaran Baru",
     "admission.addNewPatient": "Tambah Pasien",
     "admission.newPatient": "Pasien Baru",
     "admission.selectPatient": "Pilih Pasien",
@@ -32,6 +33,14 @@
     "admission.dischargeDate": "Tanggal Pulang",
     "admission.notes": "Catatan",
     "admission.create": "Simpan",
+    "admission.patient": "Pasien",
+    "admission.admissionType": "Jenis Kunjungan",
+    "admission.sick": "Sakit",
+    "admission.wellness": "Sehat",
+    "admission.admissionVisitType": "Jenis Perawatan",
+    "admission.inpatient": "Rawat Inap",
+    "admission.outpatient": "Rawat Jalan",
+    "admission.room": "Kamar",
 
     "patient.name": "Nama Pasien",
     "patient.email": "Email",
@@ -44,8 +53,9 @@
     "patient.female": "Perempuan",
     "patient.selectGender": "Pilih Jenis Kelamin",
 
+    "queue": "Antrean",
 
-    "appointments": "Appointment",
+    "appointments": "Rawat Jalan",
     "billing": "Penagihan",
     "payments": "Pembayaran",
 

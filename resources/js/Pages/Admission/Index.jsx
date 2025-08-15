@@ -7,6 +7,7 @@ import { AiOutlinePlus, AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from 'rea
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import LiveIndicator from '@/Components/LiveIndicator';
+import { t } from 'i18next';
 
 export default function Index() {
     const [admissions, setAdmissions] = useState([]);
@@ -47,7 +48,7 @@ export default function Index() {
     }, []);
 
     return (
-        <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight">Admissions</h2>}>
+        <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight">{t('admissions.admission')}</h2>}>
             <Head title="Admissions" />
             <div className="py-6 px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-end mb-4">

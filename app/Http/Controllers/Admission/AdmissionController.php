@@ -25,10 +25,10 @@ class AdmissionController extends Controller
 
     public function create()
     {
-        $patients = Patient::all();
+        // $patients = Patient::all();
         $rooms = Room::all();
         return Inertia::render('Admission/Create', [
-            'patients' => $patients,
+            // 'patients' => $patients,
             'rooms' => $rooms,
         ]);
     }
@@ -41,8 +41,24 @@ class AdmissionController extends Controller
             'discharge_date' => 'nullable|date',
             'room_id' => 'required|exists:rooms,id',
             'notes' => 'nullable|string',
+            'type' => 'required|in:sick,visit', // Ensure type is either sick or visit
+            'visit_type' => 'required|in:outpatient,inpatient', // Ensure visit_type is either outpatient or inpatient
         ]);
         $admission = PatientAdmission::create($data);
+
+        if ($data['visit_type'] === 'outpatient') {
+            // Create appointment
+            // $appointment = PatientAppointment::create([
+            //     'patient_id' => $data['patient_id'],
+            //     'date' => $data['admission_date'],
+            // ]);
+
+            // $appointmentQueue = AppointmentQueue::create([
+            //     'appointment_id' => $appointment->id,
+            //     'status' => 'pending',
+            // ]);
+        }
+
         // Broadcast the creation event for real-time listeners
         broadcast(new AdmissionCreated($admission));
         return redirect()->route('admissions.index')->with('success', 'Admission created successfully.');

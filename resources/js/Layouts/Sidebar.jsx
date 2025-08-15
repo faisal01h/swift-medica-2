@@ -15,7 +15,8 @@ import {
     AiOutlineSignature,
     AiOutlineDollarCircle,
     AiOutlineLock,
-    AiOutlineDatabase
+    AiOutlineDatabase,
+    AiOutlineGroup
 } from 'react-icons/ai';
 
 const menuItems = [
@@ -29,7 +30,8 @@ const menuItems = [
     {
         groupName: 'admissions',
         items: [
-            { name: 'admissions', icon: <AiOutlineUser />, route: 'admissions.index' },
+            { name: 'admissions.admission', icon: <AiOutlineUser />, route: 'admissions.index' },
+            { name: 'queue', icon: <AiOutlineGroup />, route: null },
             { name: 'billing', icon: <AiOutlineCalculator />, route: null },
             { name: 'payments', icon: <AiOutlineMoneyCollect />, route: null },
             { name: 'appointments', icon: <AiOutlineCalendar />, route: null }
@@ -82,7 +84,7 @@ export default function Sidebar({ sidebarOpen }) {
     );
 
     return (
-        <aside className={`md:flex flex-col flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out
+        <aside className={`md:flex flex-col flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out 
             backdrop-blur-xl backdrop-saturate-150 backdrop-brightness-110 bg-white/20 bg-slate-200
             border-r border-white/30 ${sidebarOpen ? 'w-64' : 'w-14'}`}>  
             <div className="flex items-center justify-between p-4">

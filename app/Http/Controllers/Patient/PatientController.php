@@ -27,6 +27,9 @@ class PatientController extends Controller
     {
         $perPage = $request->input('per_page', 10);
         $patients = Patient::orderBy('id')
+            ->when($request->input('filter'), fn($query, $filter) =>
+                $query->where('name', 'like', "%{$filter}%")
+            )
             ->paginate($perPage)
             ->withQueryString();
         return response()->json($patients);

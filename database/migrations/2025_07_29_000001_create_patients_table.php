@@ -68,6 +68,8 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->dateTime('admission_date');
             $table->dateTime('discharge_date')->nullable();
+            $table->enum('type', ['sick', 'wellness']);
+            $table->enum('visit_type', ['outpatient', 'inpatient']);
             $table->foreignId('room_id')
                 ->constrained('rooms')
                 ->onDelete('set null');
@@ -88,7 +90,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        
+        Schema::create('appointment_queue', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('patient_appointment_id')
+                ->constrained('patient_appointments')
+                ->onDelete('cascade');
+            $table->string('queue_number');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -101,5 +110,6 @@ return new class extends Migration
         Schema::dropIfExists('patient_appointments');
         Schema::dropIfExists('patient_admissions');
         Schema::dropIfExists('patient_admission_doctors');
+        Schema::dropIfExists('admission_queue');
     }
 };

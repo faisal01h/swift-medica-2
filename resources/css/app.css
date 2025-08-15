@@ -15,3 +15,7 @@
   @tailwind components;
   @tailwind utilities;
 }
+
+.font-mono {
+  font-family: 'Martian Mono', monospace;
+}
