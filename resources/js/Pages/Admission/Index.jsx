@@ -1,14 +1,50 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, usePage, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { AiOutlinePlus, AiOutlineEye, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import LiveIndicator from '@/Components/LiveIndicator';
 
-export default function Index({ admissions }) {
-    const { data, links } = admissions;
-    const prevLink = links?.find(link => link.label === 'Previous') || '#';
-    const nextLink = links?.find(link => link.label === 'Next') || '#';
+export default function Index() {
+    const [admissions, setAdmissions] = useState([]);
+    const [connected, setConnected] = useState(false);
+
+    useEffect(() => {
+        // Fetch initial list
+        axios.get(route('admissions.fetch')).then(response => {
+            setAdmissions(response.data);
+        });
+        // Track Pusher connection state
+        const pusher = window.Echo.connector.pusher;
+        const onConnected = () => setConnected(true);
+        const onDisconnected = () => setConnected(false);
+        pusher.connection.bind('connected', onConnected);
+        pusher.connection.bind('disconnected', onDisconnected);
+        setConnected(pusher.connection.state === 'connected');
+
+        // Subscribe to real-time events
+        const channel = window.Echo.channel('admissions');
+        // handle creation without duplicates
+        channel.listen('AdmissionCreated', e => {
+            setAdmissions(prev => prev.some(a => a.id === e.admission.id) ? prev : [...prev, e.admission]);
+        }).listen('AdmissionUpdated', e => {
+            setAdmissions(prev => prev.map(a => a.id === e.admission.id ? e.admission : a));
+        }).listen('AdmissionDeleted', e => {
+            setAdmissions(prev => prev.filter(a => a.id !== e.admissionId));
+        });
+        // Cleanup on unmount
+        return () => {
+            channel.stopListening('AdmissionCreated')
+                   .stopListening('AdmissionUpdated')
+                   .stopListening('AdmissionDeleted');
+            window.Echo.leave('admissions');
+            pusher.connection.unbind('connected', onConnected);
+            pusher.connection.unbind('disconnected', onDisconnected);
+        };
+    }, []);
 
     return (
         <AuthenticatedLayout header={<h2 className="text-xl font-semibold leading-tight">Admissions</h2>}>
@@ -20,7 +56,8 @@ export default function Index({ admissions }) {
                         New Admission
                     </Button>
                 </div>
-                <DataTable value={data} className="p-datatable-sm">
+                <LiveIndicator connected={connected} />
+                <DataTable value={admissions} className="p-datatable-sm mt-5">
                     <Column field="id" header="ID" sortable />
                     <Column field="patient.name" header="Patient" sortable />
                     <Column field="admission_date" header="Admission Date" sortable />
@@ -41,10 +78,6 @@ export default function Index({ admissions }) {
                         </div>
                     )} />
                 </DataTable>
-                <div className="flex justify-between mt-4">
-                    <Button label="Previous" disabled={!prevLink.url} onClick={() => prevLink.url && router.get(prevLink.url)} />
-                    <Button label="Next" disabled={!nextLink.url} onClick={() => nextLink.url && router.get(nextLink.url)} />
-                </div>
             </div>
         </AuthenticatedLayout>
     );

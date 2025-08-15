@@ -8,6 +8,9 @@ use Inertia\Inertia;
 use App\Models\Patient;
 use App\Models\Room;
 use App\Models\PatientAdmission;
+use App\Events\AdmissionCreated;
+use App\Events\AdmissionUpdated;
+use App\Events\AdmissionDeleted;
 
 class AdmissionController extends Controller
 {
@@ -16,13 +19,8 @@ class AdmissionController extends Controller
 
     public function index(Request $request)
     {
-        $cursor = $request->input('cursor');
-        $admissions = PatientAdmission::with(['patient', 'room'])
-            ->orderBy('id')
-            ->cursorPaginate(10, ['*'], 'cursor', $cursor);
-        return Inertia::render('Admission/Index', [
-            'admissions' => $admissions,
-        ]);
+        // Listing is handled via AJAX and real-time events
+        return Inertia::render('Admission/Index');
     }
 
     public function create()
@@ -44,7 +42,9 @@ class AdmissionController extends Controller
             'room_id' => 'required|exists:rooms,id',
             'notes' => 'nullable|string',
         ]);
-        PatientAdmission::create($data);
+        $admission = PatientAdmission::create($data);
+        // Broadcast the creation event for real-time listeners
+        broadcast(new AdmissionCreated($admission));
         return redirect()->route('admissions.index')->with('success', 'Admission created successfully.');
     }
 
@@ -80,6 +80,8 @@ class AdmissionController extends Controller
         ]);
         $admission = PatientAdmission::findOrFail($id);
         $admission->update($data);
+        // Broadcast the update event for real-time listeners
+        broadcast(new AdmissionUpdated($admission));
         return redirect()->route('admissions.index')->with('success', 'Admission updated successfully.');
     }
     
@@ -89,7 +91,20 @@ class AdmissionController extends Controller
     public function destroy($id)
     {
         $admission = PatientAdmission::findOrFail($id);
+        $admissionId = $admission->id;
         $admission->delete();
+        // Broadcast the deletion event for real-time listeners
+        broadcast(new AdmissionDeleted($admissionId));
         return redirect()->route('admissions.index')->with('success', 'Admission deleted successfully.');
+    }
+    
+    /**
+     * Return JSON list of all admissions.
+     */
+    public function fetch(Request $request)
+    {
+        $admissions = PatientAdmission::with(['patient','room'])
+                        ->orderBy('id')->get();
+        return response()->json($admissions);
     }
 }
