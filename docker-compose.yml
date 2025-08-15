@@ -1,4 +1,19 @@
 services:
+  db:
+    image: postgres:17
+    container_name: swift-medica-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: swift_medica
+    ports:
+      - "5432:5434"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
   app:
     platform: linux/amd64
     build:
@@ -26,21 +41,6 @@ services:
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/:ro
     depends_on:
       - app
-    networks:
-      - app-network
-
-  db:
-    image: postgres:17
-    container_name: swift-medica-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: laravel
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: swift_medica
-    ports:
-      - "5432:5434"
-    volumes:
-      - db_data:/var/lib/postgresql/data
     networks:
       - app-network
 
