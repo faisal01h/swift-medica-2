@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -20,6 +22,14 @@ class UsersTableSeeder extends Seeder
                 'email' => 'sampleuser' . (User::count() + 1) . '@example.com',
                 'password' => Hash::make('password'), // Use a secure password
             ]);
+        }
+
+
+        // Give user with role admin all permissions
+        $adminUser = User::where('email', 'sampleuser1@example.com')->first();
+        if ($adminUser) {
+            $adminUser->assignRole(Role::where('slug', 'admin')->first());
+            $adminUser->givePermissionTo(Permission::all());
         }
     }
 }
