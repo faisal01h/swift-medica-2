@@ -18,7 +18,7 @@ RUN apk add --no-cache \
     libjpeg-turbo-dev \
     libwebp-dev \
     build-base \
-    autoconf 
+    autoconf
 
 # Configure and install PHP extensions
 RUN docker-php-ext-configure gd \
@@ -34,6 +34,13 @@ WORKDIR /var/www
 
 # Copy existing application files
 COPY . /var/www
+
+COPY .env.example .env
+
+RUN mkdir -p bootstrap/cache \
+    storage/framework/{cache/data,views} \
+    storage/logs \
+  && chmod -R 0777 bootstrap/cache storage
 
 # Install PHP dependencies
 RUN composer install --no-dev --no-scripts --prefer-dist --no-progress && \

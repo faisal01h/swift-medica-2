@@ -29,10 +29,27 @@ services:
     networks:
       - app-network
 
+  db:
+    image: postgres:17
+    container_name: swift-medica-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: swift_medica
+    ports:
+      - "5432:5434"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
 
 volumes:
   app_vendor:
+    driver: local
+  db_data:
     driver: local

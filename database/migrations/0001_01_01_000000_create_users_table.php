@@ -49,14 +49,6 @@ return new class extends Migration
         //     $table->string('guard_name');
         //     $table->timestamps();
         // });
-
-        Schema::create('user_permissions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users', 'id');
-            $table->foreignId('permission_id')->constrained('permissions', 'id');
-            $table->timestamps();
-            $table->unique(['user_id', 'permission_id']);
-        });
     }
 
     /**
