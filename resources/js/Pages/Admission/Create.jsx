@@ -37,7 +37,7 @@ export default function Create({ rooms }) {
         setLazyParams((prev) => ({ ...prev, first, rows }));
         axios.get(route('patients.fetch'), { params: { page, filter: lazyParams.filter } })
             .then(res => {
-                const list = res.data.data.map(p => ({ label: p.name, value: p.id }));
+                const list = res.data.data.map(p => ({ label: p.name, value: p.id, data: p }));
                 setPatientOptions(first === 0 ? list : [...patientOptions, ...list]);
                 setTotalPatients(res.data.total);
             });
@@ -95,8 +95,8 @@ export default function Create({ rooms }) {
                         </div>
                         {/* display patient error */}
                         {form.errors.patient_id && <div className="text-red-600 text-sm mt-1">{form.errors.patient_id}</div>}
-                        {selectedPatient && (
-                            <PatientInfo patient={selectedPatient} />
+                        {form.data.patient_id && (
+                            <PatientInfo patient={patientOptions.find(p => p.data.id === form.data.patient_id)?.data} />
                         )}
                     </div>
                     <div>
